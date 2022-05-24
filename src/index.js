@@ -45,6 +45,10 @@ const createScene = async function () {
 
         featureManager.enableFeature(BABYLON.WebXRFeatureName.HAND_TRACKING, "latest", {
             xrInput: xrHelper.input,
+            jointMeshes: {
+                sourceMesh: BoxBuilder.CreateBox("jointParent", { size: 1 }),
+                enablePhysics: true,
+            },
         });
     } catch (e) {
         console.log(e);
