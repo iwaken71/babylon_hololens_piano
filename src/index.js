@@ -43,7 +43,7 @@ const createScene = async function () {
             snapPositions: [new BABYLON.Vector3(2.4*3.5*scale, 0, -10*scale)],
         });
 
-        featureManager.enableFeature(BABYLON.WebXRFeatureName.HAND_TRACKING, "latest", {
+        featuresManager.enableFeature(BABYLON.WebXRFeatureName.HAND_TRACKING, "latest", {
             xrInput: xrHelper.input,
             jointMeshes: {
                 sourceMesh: BoxBuilder.CreateBox("jointParent", { size: 1 }),
