@@ -47,7 +47,7 @@ const createScene = async function () {
 
 const scene = await createScene();
 
-scene.debugLayer.show();
+//scene.debugLayer.show();
 
 engine.runRenderLoop(function () {
     scene.render();
