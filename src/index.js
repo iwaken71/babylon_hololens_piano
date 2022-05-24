@@ -1,6 +1,6 @@
 import * as BABYLON from 'babylonjs';
 import 'babylonjs-loaders';
-import * as Soundfont from "../public/soundfont-player.min.js";
+//import * as Soundfont from "../public/soundfont-player.min.js";
 
 (async ()=>{
 
@@ -161,7 +161,7 @@ async function createPiano(scene){
     scaleFromPivot(piano, new BABYLON.Vector3(0, 0, 0), scale);
 
     const pointerToKey = new Map()
-  //  const pianoSound = await Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano');
+    const pianoSound = await Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano');
 
     scene.onPointerObservable.add((pointerInfo) => {
         switch (pointerInfo.type) {
@@ -174,7 +174,7 @@ async function createPiano(scene){
                         pickedMesh.position.y -= 0.5; // Move the key downward
                         pointerToKey.set(pointerId, {
                             mesh: pickedMesh,
-                            //note: pianoSound.play(pointerInfo.pickInfo.pickedMesh.name) // Play the sound of the note
+                            note: pianoSound.play(pointerInfo.pickInfo.pickedMesh.name) // Play the sound of the note
                         });
                     }
                 }
@@ -184,7 +184,7 @@ async function createPiano(scene){
                 // Only take action if the released pointer was recorded in pointerToKey
                 if (pointerToKey.has(pointerId)) {
                     pointerToKey.get(pointerId).mesh.position.y += 0.5; // Move the key upward
-                //    pointerToKey.get(pointerId).note.stop(); // Stop the sound of the note
+                    pointerToKey.get(pointerId).note.stop(); // Stop the sound of the note
                     pointerToKey.delete(pointerId);
                 }
                 break;
