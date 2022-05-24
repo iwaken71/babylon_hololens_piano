@@ -1,12 +1,12 @@
 import * as BABYLON from 'babylonjs';
 import 'babylonjs-loaders';
-import * as Soundfont from "./soundfont-player.min";
+import * as Soundfont from "../public/soundfont-player.min.js";
 
 (async ()=>{
 
 const canvas = document.getElementById("renderCanvas"); // Get the canvas element
 const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
-
+const scale = 0.015;
 
 const createScene = async function () {
 
@@ -23,7 +23,7 @@ const createScene = async function () {
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
     light.intensity = 0.6;
 
-    createPiano(scene);
+    await createPiano(scene);
 
 
 
@@ -108,7 +108,7 @@ function buildKey(scene, parent, props) {
     }
 }
 
-function createPiano(scene){
+async function createPiano(scene){
     const keyParams = [
         {type: "white", note: "C", topWidth: 1.4, bottomWidth: 2.3, topPositionX: -0.45, wholePositionX: -14.4},
         {type: "black", note: "C#", wholePositionX: -13.45},
@@ -161,33 +161,35 @@ function createPiano(scene){
     scaleFromPivot(piano, new BABYLON.Vector3(0, 0, 0), scale);
 
     const pointerToKey = new Map()
-    const pianoSound = await Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano');
+  //  const pianoSound = await Soundfont.instrument(new AudioContext(), 'acoustic_grand_piano');
 
     scene.onPointerObservable.add((pointerInfo) => {
         switch (pointerInfo.type) {
             case BABYLON.PointerEventTypes.POINTERDOWN:
+                // Only take action if the pointer is down on a mesh
                 if(pointerInfo.pickInfo.hit) {
                     let pickedMesh = pointerInfo.pickInfo.pickedMesh;
                     let pointerId = pointerInfo.event.pointerId;
-                    if (keys.has(pickedMesh)) {
+                    if (pickedMesh.parent === keyboard) {
                         pickedMesh.position.y -= 0.5; // Move the key downward
                         pointerToKey.set(pointerId, {
                             mesh: pickedMesh,
-                            note: pianoSound.play(pointerInfo.pickInfo.pickedMesh.name) // Play the sound of the note
+                            //note: pianoSound.play(pointerInfo.pickInfo.pickedMesh.name) // Play the sound of the note
                         });
                     }
                 }
                 break;
             case BABYLON.PointerEventTypes.POINTERUP:
                 let pointerId = pointerInfo.event.pointerId;
+                // Only take action if the released pointer was recorded in pointerToKey
                 if (pointerToKey.has(pointerId)) {
                     pointerToKey.get(pointerId).mesh.position.y += 0.5; // Move the key upward
-                    pointerToKey.get(pointerId).note.stop(); // Stop the sound of the note
+                //    pointerToKey.get(pointerId).note.stop(); // Stop the sound of the note
                     pointerToKey.delete(pointerId);
-            }
-            break;
-    }
-});
+                }
+                break;
+        }
+    });
 
 }
 
