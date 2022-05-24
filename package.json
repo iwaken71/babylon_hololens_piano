@@ -13,7 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "babylonjs": "^5.7.0",
-    "babylonjs-loaders": "^5.7.0"
+    "babylonjs-loaders": "^5.7.0",
+    "soundfont-player": "^0.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.0",

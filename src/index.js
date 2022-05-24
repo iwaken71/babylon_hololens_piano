@@ -1,5 +1,6 @@
 import * as BABYLON from 'babylonjs';
 import 'babylonjs-loaders';
+import * as Soundfont from 'soundfont-player';
 //import * as Soundfont from "../public/soundfont-player.min.js";
 
 (async ()=>{
