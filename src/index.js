@@ -27,21 +27,30 @@ const createScene = async function () {
     await createPiano(scene);
 
 
+    try {
+        const xrHelper = await scene.createDefaultXRExperienceAsync();
+        const featuresManager = xrHelper.baseExperience.featuresManager;
+        featuresManager.enableFeature(BABYLON.WebXRFeatureName.POINTER_SELECTION, "stable", {
+            xrInput: xrHelper.input,
+            enablePointerSelectionOnAllControllers: true        
+        });
 
-    const xrHelper = await scene.createDefaultXRExperienceAsync();
-    const featuresManager = xrHelper.baseExperience.featuresManager;
-    featuresManager.enableFeature(BABYLON.WebXRFeatureName.POINTER_SELECTION, "stable", {
-        xrInput: xrHelper.input,
-        enablePointerSelectionOnAllControllers: true        
-    });
+        const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 400, height: 400});
 
-    const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 400, height: 400});
+        featuresManager.enableFeature(BABYLON.WebXRFeatureName.TELEPORTATION, "stable", {
+            xrInput: xrHelper.input,
+            floorMeshes: [ground],
+            snapPositions: [new BABYLON.Vector3(2.4*3.5*scale, 0, -10*scale)],
+        });
 
-    featuresManager.enableFeature(BABYLON.WebXRFeatureName.TELEPORTATION, "stable", {
-        xrInput: xrHelper.input,
-        floorMeshes: [ground],
-        snapPositions: [new BABYLON.Vector3(2.4*3.5*scale, 0, -10*scale)],
-    });
+        featureManager.enableFeature(BABYLON.WebXRFeatureName.HAND_TRACKING, "latest", {
+            xrInput: xrHelper.input,
+        });
+    } catch (e) {
+        console.log(e);
+    }
+
+
     return scene;
 }
 
