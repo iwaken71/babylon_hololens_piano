@@ -35,6 +35,7 @@ const createScene = async function () {
             enablePointerSelectionOnAllControllers: true        
         });
 
+
         const ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 400, height: 400});
 
         featuresManager.enableFeature(BABYLON.WebXRFeatureName.TELEPORTATION, "stable", {
@@ -46,10 +47,12 @@ const createScene = async function () {
         featuresManager.enableFeature(BABYLON.WebXRFeatureName.HAND_TRACKING, "latest", {
             xrInput: xrHelper.input,
             jointMeshes: {
-                sourceMesh: BoxBuilder.CreateBox("jointParent", { size: 1 }),
-                enablePhysics: true,
-            },
+                disableDefaultHandMesh: true,
+                enablePhysics: true
+            }
         });
+
+
     } catch (e) {
         console.log(e);
     }
