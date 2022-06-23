@@ -1,6 +1,6 @@
 # babylon_hololens_piano
 
-```
+
 パッケージインストール
 ```
 npm install
